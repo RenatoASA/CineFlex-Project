@@ -4,20 +4,23 @@ import TopContent from './TopContent.jsx'
 import Content from './Content.jsx'
 import Sessions from "./Sessions.jsx"
 import { useState } from "react"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+export default function Container() {
+    const [urlId, setUrlId] = useState("");
+
+    return (
+        <BrowserRouter>
+            <StyleContainer>
+                <TopContent />
+                <Routes>
+                    <Route path="/" element={<Content />}/>
+                    <Route path="/sessoes/:filmeId" element={<Sessions />} />
+                </Routes>
 
 
-export default function Container(){
-    const [ urlId, setUrlId] = useState("");
-    
-    return(
-    <StyleContainer>
-        <TopContent />
-        {/* <Content setUrlId={setUrlId} /> */}
-        <Sessions urlId={urlId} />
-        
-    
-       
-    </StyleContainer>
+            </StyleContainer>
+        </BrowserRouter>
     )
 }
 

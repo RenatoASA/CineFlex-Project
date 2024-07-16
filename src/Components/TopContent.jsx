@@ -13,7 +13,7 @@ export default function Topo(){
 const TopoStyle = styled.div`
      width: 375px;
     height: 67px;
-    background-color: green;
+    background-color: #EE897F ;
     position: fixed;
     top: 0px;
     display: flex;

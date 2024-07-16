@@ -3,21 +3,22 @@ import styled from 'styled-components'
 // import { useState } from "react";
 import axios from "axios"
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
-export default function Content({ setUrlId }) {
+export default function Content() {
 
     const [movies, setMovies] = useState(null);
 
     useEffect(() => {
 
-        const promise = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies");
+        axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies")
 
-        promise.then((response) => setMovies(response.data));
+        .then((response) => setMovies(response.data))
 
-        promise.catch((error) => console.log(error.response.data));
+        .catch((error) => console.log(error.response.data));
     }, []);
 
-    if(movies === null){
+    if (movies === null) {
         return <div>Carregando...</div>
     }
 
@@ -27,11 +28,11 @@ export default function Content({ setUrlId }) {
                 <span>Em Cartaz</span>
             </StyleTitle>
             <StyleImages>
-            {movies.map(poster => (
-                <StyleImage key={poster.id} onClick={() => setUrlId(poster.id)} >
-                    <img src={poster.posterURL} />
-                </StyleImage>            
-            ))}
+                {movies.map(poster => (
+                    <StyleImage to={`/sessoes/${poster.id}`} key={poster.id} >
+                        <img src={poster.posterURL} />
+                    </StyleImage>
+                ))}
             </StyleImages>
         </>
     )
@@ -66,7 +67,7 @@ const StyleTitle = styled.div`
         font-family: 'Sarala',sans-serif;
     }
  `
-const StyleImage = styled.div`
+const StyleImage = styled(Link)`
       margin-top: 20px;
       margin-left: 20px;
       
