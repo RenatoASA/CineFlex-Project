@@ -70,7 +70,7 @@ const StyleTitle = styled.div`
 const StyleImage = styled(Link)`
       margin-top: 20px;
       margin-left: 20px;
-      
+      text-decoration: none;
       img{ width: 145px;
        height: 210px;
        border-radius: 5px;

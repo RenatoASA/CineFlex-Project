@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 export default function Sessions() {
 
@@ -24,7 +24,7 @@ export default function Sessions() {
     if(session=== null){
         return <div>Carregando...</div>
     }
-
+    console.log("valor do setSession axios: "+ session.id);
     return (
         <>
             <StyleTitle>
@@ -38,7 +38,7 @@ export default function Sessions() {
                     <hr></hr>
                     <StyleSeparator>
                     {day.showtimes.map(showtime => (                    
-                    <StyleTime key={showtime.id}>{showtime.name}</StyleTime> 
+                    <StyleTime key={showtime.id} to={`/assentos/${showtime.id}`}>{showtime.name}</StyleTime> 
                     
                 ))}
                     </StyleSeparator>
@@ -59,7 +59,7 @@ const StyleSeparator = styled.div`
 
 `
 
-const StyleTime = styled.div`
+const StyleTime = styled(Link)`
 border:solid 2px #EE897F;
 width: 84px;
 height: 41px;
@@ -70,6 +70,7 @@ display:flex;
 justify-content: center;
 margin-left: 20px;
 margin-top: 15px;
+text-decoration: none;
 `
 
 const SessionContent = styled.div`

@@ -3,11 +3,12 @@ import styled from "styled-components"
 import TopContent from './TopContent.jsx'
 import Content from './Content.jsx'
 import Sessions from "./Sessions.jsx"
+import Seats from "./Seats.jsx"
 import { useState } from "react"
+import Success from "./Success.jsx"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 export default function Container() {
-    const [urlId, setUrlId] = useState("");
 
     return (
         <BrowserRouter>
@@ -16,6 +17,8 @@ export default function Container() {
                 <Routes>
                     <Route path="/" element={<Content />}/>
                     <Route path="/sessoes/:filmeId" element={<Sessions />} />
+                    <Route path="/assentos/:idSessao" element={<Seats />} />
+                    <Route path="/sucesso" element={<Success />} />
                 </Routes>
 
 
