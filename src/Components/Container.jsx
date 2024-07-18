@@ -4,7 +4,6 @@ import TopContent from './TopContent.jsx'
 import Content from './Content.jsx'
 import Sessions from "./Sessions.jsx"
 import Seats from "./Seats.jsx"
-import { useState } from "react"
 import Success from "./Success.jsx"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 

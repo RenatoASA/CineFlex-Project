@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-// import { useState } from "react";
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
@@ -10,8 +9,8 @@ export default function Seats() {
 
     const { idSessao } = useParams();
     const [seats, setSeats] = useState(null);
-    const [name, setName] = useState();
-    const [cpf, setCpf] = useState();
+    const [name, setName] = useState('');
+    const [cpf, setCpf] = useState('');
     const [selectedSeats, setSelectedSeats] = useState([]);
     const navigate = useNavigate();
 
@@ -34,6 +33,14 @@ export default function Seats() {
         setCpf(formattedCpf);
     };
 
+    function formatCPF(value) {
+        return value
+            .replace(/\D/g, '') // Remove tudo que não é dígito
+            .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona um ponto após os três primeiros dígitos
+            .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona um ponto após os três próximos dígitos
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona um traço antes dos últimos dois dígitos
+    }
+
 
     if (seats === null) {
         return <div>Carregando...</div>
@@ -53,42 +60,46 @@ export default function Seats() {
         }
     };
 
-    function formatCPF(value) {
-        return value
-            .replace(/\D/g, '') // Remove tudo que não é dígito
-            .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona um ponto após os três primeiros dígitos
-            .replace(/(\d{3})(\d)/, '$1.$2') // Adiciona um ponto após os três próximos dígitos
-            .replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona um traço antes dos últimos dois dígitos
-    }
     const Submit = (e) => {
         e.preventDefault();
-
+    
         const reservation = {
             ids: selectedSeats,
             name: name,
             cpf: cpf
         };
-
+    
         axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', reservation)
-        
-            .then(() => navigate('/sucesso'))
+            .then(() => {
+                const selectedSeatsData = seats.seats.filter(seat => selectedSeats.includes(seat.id));
+                navigate('/sucesso', {
+                    state: {
+                        selectedSeats: selectedSeatsData,
+                        name,
+                        cpf,
+                        seats
+                    }
+                });
+            })
             .catch((error) => console.log(error.response.data));
     };
+
+
 
     return (
         <>
             <StyleTitle>
                 <span>Selecione o(s) assento(s)</span>
             </StyleTitle>
-            <StyleImages>
+            <StyleSeats>
                 <form onSubmit={Submit}>
                     <SeatsContent >
                         {seats.seats.map(seat => (
                             <SeatButton
                                 key={seat.id}
                                 onClick={() => SeatClick(seat)}
-                                selected={selectedSeats.includes(seat.id)}
-                                isAvailable={seat.isAvailable}
+                                $selected={selectedSeats.includes(seat.id)}
+                                $isAvailable={seat.isAvailable}
                                 >
                                 
                                 {seat.name}
@@ -118,17 +129,17 @@ export default function Seats() {
                     <button>Rersevar assento</button>
                     </StyleInput>
                 </form>
-            </StyleImages>
+            </StyleSeats>
         </>
     )
 
 }
 
 const SeatButton = styled.button`
-    border-color: ${props => props.selected ? '#9c1408' : ''};
-    background-color: ${props => props.selected ? '#EE897F' : (props.isAvailable ? ' #26f591' : '#212226')};
-    color: ${props => props.isAvailable ? 'black' : '#212226'};
-       border-radius: 12px;
+    border-color: ${props => props.$selected ? '#9c1408' : ''};
+    background-color: ${props => props.$selected ? '#EE897F' : (props.$isAvailable ? ' #83f1bc' : '#212226')};
+    color: ${props => props.$isAvailable ? 'black' : '#212226'};
+    border-radius: 12px;
     width: 28px;
     height: 28px;
   
@@ -196,13 +207,6 @@ const SeatsContent = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    /* button{
-        border-radius: 12px;
-        width: 28px;
-        height: 28px;
-        color: ${props => props.selected ? 'white' : 'initial'};
-        background-color: ${props => props.selected ? 'green' : 'initial'};
-    } */
     hr{
         width: 50%;
         margin-top: 13px;
@@ -210,15 +214,16 @@ const SeatsContent = styled.div`
 
     }
 `
-const StyleImages = styled.div`
+const StyleSeats = styled.div`
         display: flex;
         width: 100%;
         height: 550px;
         overflow-y: auto;
         flex-wrap: wrap;      
-        
+        font-family: 'Sarala',sans-serif;
  `
 const StyleTitle = styled.div`
+    font-family: 'Sarala',sans-serif;
     width: 375px;
     height: 67px;
     background-color: #212226;

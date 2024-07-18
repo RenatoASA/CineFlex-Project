@@ -1,68 +1,52 @@
 import styled from 'styled-components'
-// import { useState } from "react";
-import axios from "axios"
-import { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 export default function Success() {
-
-    const { filmeId } = useParams();
-    const [session, setSession] = useState(null);
-    console.log(filmeId);
-
-
-    // useEffect(() => {
-
-    //     axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmeId}/showtimes`)
-
-    //     .then((response) => setSession(response.data))
-
-    //     .catch((error) => console.log(error.response.data))
-    // }, []);
-
-    // if(session=== null){
-    //     return <div>Carregando...</div>
-    // }
+    const location = useLocation();
+    const { selectedSeats, name, cpf, seats } = location.state;
 
     return (
         <>
             <StyleTitle>
                 <span>Pedido finalizado!</span>
             </StyleTitle>
-            <StyleImages>
+            <StyleShow>
                 <SessionContent >
                     <StyleSession>
                         <span><b>Filme e sessão</b></span>
                         <hr></hr>
-                        <p>Homem aranha no aranhaverso</p>
-                        <p>23/02/2021 às 21:00</p>
+                        <p>{seats.movie.title}</p>
+                        <p>{seats.day.date} às {seats.name}</p>
                     </StyleSession>
                     <StyleTicket>
                         <span><b>Ingressos</b></span>
                         <hr></hr>
-                        <p>Homem aranha no aranhaverso</p>
-                        <p>23/02/2021 às 21:00</p>
+                        {selectedSeats.map(seat => (
+                            <p key={seat.id}>Assento {seat.name}</p>
+                        ))}
                     </StyleTicket>
                     <StyleBuyer>
                         <span><b>Comprador(a)</b></span>
                         <hr></hr>
-                        <p>Homem aranha no aranhaverso</p>
-                        <p>23/02/2021 às 21:00</p>
+                        <p>Nome: {name}</p>
+                        <p>CPF: {cpf}</p>
                     </StyleBuyer>
                     <StyleButton>
-                        <button>Voltar para tela inicial</button>
+                    <Link to="/">
+                            <button><b>Voltar para tela inicial</b></button>
+                    </Link>
                     </StyleButton>
 
                 </SessionContent>
-            </StyleImages>
+            </StyleShow>
         </>
     )
 
 }
 
 const StyleButton = styled.div`
-margin-top: 30px;
+margin-top: 80px;
+
 button{
     font-size: 18px;
 background-color: #EE897F;
@@ -72,12 +56,13 @@ border-radius:5px;
 }
 `
 
-const StyleImages = styled.div`
+const StyleShow = styled.div`
         display: flex;
         width: 100%;
         height: 550px;
         overflow-y: auto;
         flex-wrap: wrap;
+        font-family: 'Sarala',sans-serif;
            
  `
 
@@ -90,6 +75,7 @@ const StyleTitle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: 'Sarala',sans-serif;
     
     span{
         size: 24px;
@@ -101,13 +87,14 @@ const StyleTitle = styled.div`
 
 const SessionContent = styled.div`
     width: 338px;
-    height: 421px;
+    height: 390px;
     background-color: #2B2D36;
     display:flex;
     margin-left: 15px;
     margin-top: 15px;
     border-radius: 4px;
     flex-direction: column;
+    line-height: 15px;
     span{
         font-size: 20px;
         color: #ffffff;

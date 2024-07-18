@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-// import { useState } from "react";
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
@@ -9,7 +8,7 @@ export default function Sessions() {
 
     const {filmeId}= useParams();
     const [session, setSession] = useState(null);
-    console.log(filmeId);
+   
 
 
     useEffect(() => {
@@ -24,13 +23,13 @@ export default function Sessions() {
     if(session=== null){
         return <div>Carregando...</div>
     }
-    console.log("valor do setSession axios: "+ session.id);
+    
     return (
         <>
             <StyleTitle>
                 <span>Selecione o horário</span>
             </StyleTitle>
-            <StyleImages>   
+            <StyleSession>   
             {session.days.map(day => (
                 <SessionContent key={day.id}>
                     
@@ -44,7 +43,7 @@ export default function Sessions() {
                     </StyleSeparator>
                 </SessionContent>            
             ))}
-            </StyleImages>
+            </StyleSession>
         </>
     )
 
@@ -98,13 +97,13 @@ const SessionContent = styled.div`
 
 
 
-const StyleImages = styled.div`
+const StyleSession = styled.div`
         display: flex;
         width: 100%;
         height: 550px;
         overflow-y: auto;
         flex-wrap: wrap;
-        
+        font-family: 'Sarala',sans-serif;
         
  `
 
@@ -118,21 +117,11 @@ const StyleTitle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    
+    font-family: 'Sarala',sans-serif;   
     span{
         size: 24px;
         top: 0px;
         color: #ffffff;
         font-family: 'Sarala',sans-serif;
     }
- `
-const StyleImage = styled.div`
-      margin-top: 20px;
-      margin-left: 20px;
-      
-      img{ width: 145px;
-       height: 210px;
-       border-radius: 5px;
-       
-      }
  `

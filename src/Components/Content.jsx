@@ -1,6 +1,5 @@
 
 import styled from 'styled-components'
-// import { useState } from "react";
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
@@ -78,16 +77,3 @@ const StyleImage = styled(Link)`
       }
  `
 
-// const StyleContent = styled.div`
-//     width: 100%;
-//     height: 100%;
-//     background-color: #FB6B6B;
-//     margin-top: 200px;
-//     align-items: center;
-//     display: flex;
-//     justify-content: center;
-//     flex-direction: column;
-//     overflow-y: auto;
-//     padding-top: 20px;
-//     box-sizing: border-box;
-// `;
